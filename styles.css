@@ -1,0 +1,99 @@
+* {
+    box-sizing: border-box;
+    font-family: monospace;
+}
+
+#root {
+    display: grid;
+    grid-template-rows: repeat(8, 1fr);
+    grid-template-columns: repeat(8, 1fr);
+    width: 800px;
+    height: 800px;
+    border: 5px solid black;
+}
+
+.cell {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.white-cell {
+    background-color: white;
+    color: black;
+}
+
+.black-cell, .black-cell > * {
+    background-color: grey;
+    color: white;
+}
+
+.possible-move {
+}
+
+.selected-cell {
+}
+
+.target {
+    padding: 0;
+    margin: 0;
+    border: none;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: transparent;
+    z-index: 10;
+}
+
+.move {
+    width: 30%;
+    height: 30%;
+    background-color: #0004;
+    border-radius: 100%;
+}
+
+.take {
+    width: 80%;
+    height: 80%;
+    background-color: transparent;
+    border: 7px solid #0004;
+    border-radius: 100%;
+}
+
+.piece {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: transparent;
+    border: none;
+    position: absolute;
+}
+
+header {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+#reset {
+    display: inline;
+    border: 2px solid grey;
+    border-radius: 5px;
+    background-color: transparent;
+    background-repeat: no-repeat;
+}
+
+#black-takes, #white-takes {
+    width: 800px;
+    height: 50px;
+    display: flex;
+}
+
+.take-icon {
+    width: 50px;
+    height: 50px;
+}
