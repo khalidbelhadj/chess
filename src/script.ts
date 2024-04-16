@@ -1,12 +1,13 @@
 const root = document.getElementById("root");
 
+// Types
 type Piece = {
   id: string;
   type: "pawn" | "rook" | "knight" | "bishop" | "queen" | "king";
   row: number;
   col: number;
   color: "black" | "white";
-  element: HTMLButtonElement | null;
+  element: HTMLButtonElement | null
   firstMove: boolean;
 };
 
@@ -23,7 +24,7 @@ type Move =
       other: Piece;
     };
 
-function createGame() {
+function createPieces() {
   const p: Piece[] = [
     {
       id: "br1",
@@ -197,13 +198,15 @@ function createGame() {
   return p;
 }
 
+// Globals
 const board: HTMLDivElement[] = [];
 let pieces = (JSON.parse(localStorage.getItem("pieces") ?? "null") ??
-  createGame()) as Piece[];
+  createPieces()) as Piece[];
 let takes = (JSON.parse(localStorage.getItem("takes") ?? "null") ??
   []) as string[];
 let turn = JSON.parse(localStorage.getItem("turn") ?? "null") ?? "white";
 
+// Helpers
 function saveGameState() {
   localStorage.setItem("pieces", JSON.stringify(pieces));
   localStorage.setItem("takes", JSON.stringify(takes));
@@ -233,7 +236,8 @@ function getPiece(row: number, col: number) {
   );
 }
 
-function bruh(
+// Logic
+function findMoves(
   piece: Piece,
   limit: number,
   updateFn: (row: number, col: number) => [number, number],
@@ -290,54 +294,56 @@ function getPossibleMoves(piece: Piece) {
       const dir = 2 * +(piece.color == "black") - 1;
 
       moves.push(
-        ...bruh(piece, piece.firstMove ? 2 : 1, (r, c) => [r + 1 * dir, c]),
+        ...findMoves(piece, piece.firstMove ? 2 : 1, (r, c) => [r + 1 * dir, c]),
       );
       break;
     case "rook":
-      moves.push(...bruh(piece, 7, (r, c) => [r - 1, c]));
-      moves.push(...bruh(piece, 7, (r, c) => [r + 1, c]));
-      moves.push(...bruh(piece, 7, (r, c) => [r, c - 1]));
-      moves.push(...bruh(piece, 7, (r, c) => [r, c + 1]));
+      moves.push(...findMoves(piece, 7, (r, c) => [r - 1, c]));
+      moves.push(...findMoves(piece, 7, (r, c) => [r + 1, c]));
+      moves.push(...findMoves(piece, 7, (r, c) => [r, c - 1]));
+      moves.push(...findMoves(piece, 7, (r, c) => [r, c + 1]));
       break;
     case "knight":
-      moves.push(...bruh(piece, 1, (r, c) => [r - 2, c + 1]));
-      moves.push(...bruh(piece, 1, (r, c) => [r - 2, c - 1]));
-      moves.push(...bruh(piece, 1, (r, c) => [r + 2, c + 1]));
-      moves.push(...bruh(piece, 1, (r, c) => [r + 2, c - 1]));
-      moves.push(...bruh(piece, 1, (r, c) => [r - 1, c + 2]));
-      moves.push(...bruh(piece, 1, (r, c) => [r - 1, c - 2]));
-      moves.push(...bruh(piece, 1, (r, c) => [r + 1, c + 2]));
-      moves.push(...bruh(piece, 1, (r, c) => [r + 1, c - 2]));
+      moves.push(...findMoves(piece, 1, (r, c) => [r - 2, c + 1]));
+      moves.push(...findMoves(piece, 1, (r, c) => [r - 2, c - 1]));
+      moves.push(...findMoves(piece, 1, (r, c) => [r + 2, c + 1]));
+      moves.push(...findMoves(piece, 1, (r, c) => [r + 2, c - 1]));
+      moves.push(...findMoves(piece, 1, (r, c) => [r - 1, c + 2]));
+      moves.push(...findMoves(piece, 1, (r, c) => [r - 1, c - 2]));
+      moves.push(...findMoves(piece, 1, (r, c) => [r + 1, c + 2]));
+      moves.push(...findMoves(piece, 1, (r, c) => [r + 1, c - 2]));
       break;
     case "bishop":
-      moves.push(...bruh(piece, 7, (r, c) => [r - 1, c - 1]));
-      moves.push(...bruh(piece, 7, (r, c) => [r - 1, c + 1]));
-      moves.push(...bruh(piece, 7, (r, c) => [r + 1, c + 1]));
-      moves.push(...bruh(piece, 7, (r, c) => [r + 1, c - 1]));
+      moves.push(...findMoves(piece, 7, (r, c) => [r - 1, c - 1]));
+      moves.push(...findMoves(piece, 7, (r, c) => [r - 1, c + 1]));
+      moves.push(...findMoves(piece, 7, (r, c) => [r + 1, c + 1]));
+      moves.push(...findMoves(piece, 7, (r, c) => [r + 1, c - 1]));
       break;
     case "queen":
-      moves.push(...bruh(piece, 7, (r, c) => [r - 1, c]));
-      moves.push(...bruh(piece, 7, (r, c) => [r + 1, c]));
-      moves.push(...bruh(piece, 7, (r, c) => [r, c - 1]));
-      moves.push(...bruh(piece, 7, (r, c) => [r, c + 1]));
-      moves.push(...bruh(piece, 7, (r, c) => [r - 1, c - 1]));
-      moves.push(...bruh(piece, 7, (r, c) => [r - 1, c + 1]));
-      moves.push(...bruh(piece, 7, (r, c) => [r + 1, c + 1]));
-      moves.push(...bruh(piece, 7, (r, c) => [r + 1, c - 1]));
+      moves.push(...findMoves(piece, 7, (r, c) => [r - 1, c]));
+      moves.push(...findMoves(piece, 7, (r, c) => [r + 1, c]));
+      moves.push(...findMoves(piece, 7, (r, c) => [r, c - 1]));
+      moves.push(...findMoves(piece, 7, (r, c) => [r, c + 1]));
+      moves.push(...findMoves(piece, 7, (r, c) => [r - 1, c - 1]));
+      moves.push(...findMoves(piece, 7, (r, c) => [r - 1, c + 1]));
+      moves.push(...findMoves(piece, 7, (r, c) => [r + 1, c + 1]));
+      moves.push(...findMoves(piece, 7, (r, c) => [r + 1, c - 1]));
       break;
     case "king":
-      moves.push(...bruh(piece, 1, (r, c) => [r - 1, c]));
-      moves.push(...bruh(piece, 1, (r, c) => [r + 1, c]));
-      moves.push(...bruh(piece, 1, (r, c) => [r, c - 1]));
-      moves.push(...bruh(piece, 1, (r, c) => [r, c + 1]));
-      moves.push(...bruh(piece, 1, (r, c) => [r - 1, c - 1]));
-      moves.push(...bruh(piece, 1, (r, c) => [r - 1, c + 1]));
-      moves.push(...bruh(piece, 1, (r, c) => [r + 1, c + 1]));
-      moves.push(...bruh(piece, 1, (r, c) => [r + 1, c - 1]));
+      moves.push(...findMoves(piece, 1, (r, c) => [r - 1, c]));
+      moves.push(...findMoves(piece, 1, (r, c) => [r + 1, c]));
+      moves.push(...findMoves(piece, 1, (r, c) => [r, c - 1]));
+      moves.push(...findMoves(piece, 1, (r, c) => [r, c + 1]));
+      moves.push(...findMoves(piece, 1, (r, c) => [r - 1, c - 1]));
+      moves.push(...findMoves(piece, 1, (r, c) => [r - 1, c + 1]));
+      moves.push(...findMoves(piece, 1, (r, c) => [r + 1, c + 1]));
+      moves.push(...findMoves(piece, 1, (r, c) => [r + 1, c - 1]));
       break;
   }
   return moves;
 }
+
+// Handlers
 function handlePieceClick(piece: Piece) {
   if (piece.color !== turn) return;
   clearPossibleMoves();
@@ -362,6 +368,7 @@ function handleMoveOrTake(piece: Piece, move: Move) {
   drawTakes();
 }
 
+// Rendering
 function drawPossibleMoves(piece: Piece, moves: Move[]) {
   board[piece.row * 8 + piece.col]!.classList.add("selected-cell");
   for (const move of moves) {
@@ -426,23 +433,6 @@ function clearPieces() {
   }
 }
 
-function drawBoard() {
-  if (!root) return;
-
-  for (let i = 0; i < 8; ++i) {
-    for (let j = 0; j < 8; ++j) {
-      let color = "black";
-      if (i % 2 == j % 2) {
-        color = "white";
-      }
-      const cell = document.createElement("div");
-      cell.className = `cell ${color}-cell`;
-      root.appendChild(cell);
-      board.push(cell);
-    }
-  }
-}
-
 function drawTakes() {
   const t = {
     white: document.getElementById("black-takes")!,
@@ -470,6 +460,24 @@ function clearTakes() {
   while (white.firstChild) white.removeChild(white.lastChild!);
   while (black.firstChild) black.removeChild(black.lastChild!);
 }
+
+function drawBoard() {
+  if (!root) return;
+
+  for (let i = 0; i < 8; ++i) {
+    for (let j = 0; j < 8; ++j) {
+      let color = "black";
+      if (i % 2 == j % 2) {
+        color = "white";
+      }
+      const cell = document.createElement("div");
+      cell.className = `cell ${color}-cell`;
+      root.appendChild(cell);
+      board.push(cell);
+    }
+  }
+}
+
 
 function main() {
   drawBoard();
