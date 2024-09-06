@@ -6,13 +6,20 @@
     <body>
         <header>
             <h1>Chess</h1>
-            <button id="reset">
-                <img src="./images/reset-icon.svg" />
-            </button>
         </header>
-        <div id="black-takes"></div>
-        <div id="root"></div>
-        <div id="white-takes"></div>
+        <main>
+            <div id="board-panel">
+                <div id="black-takes"></div>
+                <div id="root"></div>
+                <div id="white-takes"></div>
+            </div>
+            <div id="info-panel">
+                <h2 id="info-title">White's Move</h2>
+                <button id="reset">
+                    <img src="./images/reset-icon.svg" />
+                </button>
+            </div>
+        </main>
         <script src="./build/script.js"></script>
     </body>
 </html>
